@@ -46,6 +46,12 @@ class DerivedLoggableSuite extends AnyFlatSpec with Matchers {
     ) shouldBe """{"foos":[],"ys":[],"zs":[["one","two"],["three"]]}"""
   }
 
+  "Person logging" should "respect masked annotation" in {
+    json(
+      Person("Petrov", 26)
+    ) shouldBe """{"name":"******","age":26}"""
+  }
+
 }
 
 object DerivedLoggableSuite {
@@ -61,4 +67,7 @@ object DerivedLoggableSuite {
 
   @derive(loggable)
   final case class Baz(foos: List[Foo] = Nil, ys: Vector[Int] = Vector(), zs: Option[List[List[String]]] = None)
+
+  @derive(loggable)
+  final case class Person(@masked name: String, age: Int)
 }
